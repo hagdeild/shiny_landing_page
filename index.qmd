@@ -1,0 +1,41 @@
+---
+title: "Analytics Portal"
+format:
+  html:
+    theme: flatly
+website:
+  title: "Analytics Portal"
+  page-navigation: false
+---
+
+::: {.container}
+
+## Shiny apps
+
+```{r echo = FALSE, message = FALSE, results = 'asis'}
+# ---- packages ----
+library(tidyverse)
+library(glue)
+
+apps <- tribble(
+  ~slug,          ~title,              ~description,
+  "varasjodur_tillaga_utfaersla",   "Styrkjakerfi VR - Reiknivél",   "Reiknivél fyrir nýja hugmynd að styrkjakerfi VR",
+  "varasjodur_utfaersla","FVSA kerfið fyrir VR",   "Reiknivél sem heimfærir styrkjakerfi FVSA yfir á VR"
+)
+
+cat("<div class=\"row\">\n")
+pwalk(apps, \(slug, title, description) {
+  cat(glue(
+'<div class="col-md-4 mb-4">
+<div class="card h-100 shadow-sm">
+<div class="card-body d-flex flex-column">
+<h5 class="card-title">{title}</h5>
+<p class="card-text flex-grow-1">{description}</p>
+<a class="btn btn-primary mt-auto" target="_blank"
+   href=" https://vrstettarfelag.shinyapps.io/{slug}/">Open app &raquo;</a>
+</div></div></div>\n'))
+})
+cat("</div>")
+```
+
+:::
