@@ -1,16 +1,9 @@
 ---
 title: "Analytics Portal"
-format:
-  html:
-    theme: flatly
-website:
-  title: "Analytics Portal"
-  page-navigation: false
 ---
 
 ::: {.container}
 
-## Shiny apps
 
 ```{r echo = FALSE, message = FALSE, results = 'asis'}
 # ---- packages ----
@@ -32,7 +25,7 @@ pwalk(apps, \(slug, title, description) {
 <h5 class="card-title">{title}</h5>
 <p class="card-text flex-grow-1">{description}</p>
 <a class="btn btn-primary mt-auto" target="_blank"
-   href=" https://vrstettarfelag.shinyapps.io/{slug}/">Open app &raquo;</a>
+   href=" https://vrstettarfelag.shinyapps.io/{slug}/">Opna app &raquo;</a>
 </div></div></div>\n'))
 })
 cat("</div>")
