@@ -1,6 +1,9 @@
 [build]
 publish = "_site"
 
+[build.environment]
+NODE_VERSION = "18"   # or another stable version you prefer
+
 [[plugins]]
 package = "@quarto/netlify-plugin-quarto"
 
