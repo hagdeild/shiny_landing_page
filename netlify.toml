@@ -1,8 +1,8 @@
 [build]
-publish = "_site"          # where Quarto outputs the HTML
+publish = "_site"
 
 [[plugins]]
 package = "@quarto/netlify-plugin-quarto"
 
   [plugins.inputs]
-  version = "1.7.29"       # same Quarto version you use locally
+  version = "1.7.29"
