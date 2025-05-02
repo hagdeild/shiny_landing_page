@@ -1,3 +1,0 @@
-[build]
-publish = "_site"
-command = "echo 'using pre‑rendered site'"

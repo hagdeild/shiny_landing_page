@@ -1,1 +1,1 @@
-# shiny_landing_page
+# Landinge page fyrir shiny apps á shinyapps.io
