@@ -1,11 +1,3 @@
 [build]
 publish = "_site"
-
-[build.environment]
-NODE_VERSION = "18"   # or another stable version you prefer
-
-[[plugins]]
-package = "@quarto/netlify-plugin-quarto"
-
-  [plugins.inputs]
-  version = "1.7.29"
+command = "echo 'using pre‑rendered site'"
