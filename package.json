@@ -1,7 +1,0 @@
-{
-  "name": "shiny_landing_page",
-  "private": true,
-  "devDependencies": {
-    "@quarto/netlify-plugin-quarto": "*"
-  }
-}
