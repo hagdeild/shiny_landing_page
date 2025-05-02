@@ -1,7 +1,8 @@
 [build]
-  command = """
-    wget https://quarto.org/download/latest/quarto-linux-amd64.deb &&
-    sudo dpkg -i quarto-linux-amd64.deb &&
-    quarto render
-  """
-  publish = "_site"
+publish = "_site"          # where Quarto outputs the HTML
+
+[[plugins]]
+package = "@quarto/netlify-plugin-quarto"
+
+  [plugins.inputs]
+  version = "1.7.29"       # same Quarto version you use locally
