@@ -1,7 +1,6 @@
 library(shiny)
 library(shinymanager)
 library(bslib)
-library(fontawesome)
 
 # ---- 1. credentials table ----
 credentials <- data.frame(
@@ -10,110 +9,81 @@ credentials <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# ---- 2. build the raw UI with improved styling ----
+# ---- 2. Define apps configuration ----
+# This is the key change: a single data frame that contains all app information
+# To add a new app, simply add a new row to this data frame
+apps_config <- data.frame(
+  app_id = c("app1", "app2"),
+  app_title = c("Styrkjakerfi VR - Reiknivél", "FVSA kerfi fyrir VR"),
+  app_description = c(
+    "Reiknivél fyrir nýja hugmynd að styrkjakerfi VR",
+    "Reiknivél sem heimfærir styrkjakerfi FVSA yfir á VR"
+  ),
+  app_url = c(
+    "https://vrstettarfelag.shinyapps.io/varasjodur_tillaga_utfaersla/",
+    "https://vrstettarfelag.shinyapps.io/varasjodur_utfaersla/"
+  ),
+  stringsAsFactors = FALSE
+)
+
+# ---- 3. Function to generate app cards ----
+# This function creates a card for each app based on the configuration
+generate_app_card <- function(app_info) {
+  div(
+    class = "card mb-4 border",
+    div(
+      class = "card-body",
+      h5(app_info$app_title, class = "card-title"),
+      p(app_info$app_description, class = "text-muted"),
+      actionButton(
+        paste0("btn_", app_info$app_id), 
+        HTML("Opna app &raquo;"), 
+        class = "btn btn-dark", 
+        onclick = paste0("window.open('", app_info$app_url, "', '_blank')")
+      )
+    )
+  )
+}
+
+# ---- 4. build the raw UI with improved styling ----
 landing_raw <- page_fillable(
   theme = bs_theme(
     version = 5,
     bootswatch = "flatly",
-    primary = "#3498db",
-    "enable-shadows" = TRUE,
-    "border-radius" = "0.5rem"
+    "enable-shadows" = FALSE,
+    "border-radius" = "0.25rem"
   ),
   
-  # Header with logo and title
+  # Header with just the title
   div(
-    class = "d-flex align-items-center mb-4 p-3 bg-primary text-white rounded shadow-sm",
-    # Use a local logo file from www directory
-    tags$img(src = "logo.png", height = "50px", class = "me-3"),
-    h2("My Shiny Apps", class = "m-0")
+    class = "container mt-4",
+    h1("Reiknivélar og mælaborð VR", class = "mb-4")
   ),
   
-  # Main content card
-  card(
-    class = "shadow-sm",
-    card_header(
-      class = "bg-light",
-      h4("Available Applications", class = "m-0")
-    ),
-    card_body(
-      # App cards in a grid layout
-      div(
-        class = "row row-cols-1 row-cols-md-2 g-4",
-        
-        # App 1
-        div(
-          class = "col",
-          card(
-            class = "h-100 hover-shadow",
-            card_header(tags$h5("App 1", class = "card-title m-0"), class = "bg-light"),
-            card_body(
-              p("Description of App 1 and its functionality. Replace with your own description."),
-              div(class = "d-flex align-items-center",
-                  fontawesome::fa("chart-line", fill = "#3498db", height = "1.5em"),
-                  span("Data Visualization", class = "ms-2 text-muted")
-              )
-            ),
-            card_footer(
-              actionButton("btn_app1", "Launch App", 
-                           class = "btn-primary", 
-                           onclick = "window.open('https://<yourapp1>.shinyapps.io', '_blank')")
-            )
-          )
-        ),
-        
-        # App 2
-        div(
-          class = "col",
-          card(
-            class = "h-100 hover-shadow",
-            card_header(tags$h5("App 2", class = "card-title m-0"), class = "bg-light"),
-            card_body(
-              p("Description of App 2 and its functionality. Replace with your own description."),
-              div(class = "d-flex align-items-center",
-                  fontawesome::fa("table", fill = "#3498db", height = "1.5em"),
-                  span("Data Analysis", class = "ms-2 text-muted")
-              )
-            ),
-            card_footer(
-              actionButton("btn_app2", "Launch App", 
-                           class = "btn-primary", 
-                           onclick = "window.open('https://<yourapp2>.shinyapps.io', '_blank')")
-            )
-          )
-        )
-      )
-    )
-  ),
-  
-  # Footer
+  # App cards in vertical layout
   div(
-    class = "mt-4 p-3 text-center text-muted",
-    hr(),
-    p("© 2025 My Organization", class = "mb-0"),
-    tags$style(HTML("
-      /* Custom CSS */
-      .hover-shadow:hover {
-        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-        transition: box-shadow 0.3s ease-in-out;
-      }
-      .card {
-        transition: all 0.3s ease-in-out;
-      }
-    "))
-  )
+    class = "container",
+    # Dynamically generate app cards from configuration
+    lapply(1:nrow(apps_config), function(i) {
+      generate_app_card(apps_config[i, ])
+    })
+  ),
+  
+  # Empty footer - no CSS needed
+  div()
 )
 
-# ---- 3. Add custom styling for the auth panel ----
+# ---- 5. Add custom styling for the auth panel ----
 custom_auth_css <- tags$style(HTML("
   /* Auth panel styling */
   .panel-auth {
-    border-radius: 0.5rem;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.1);
   }
   .panel-auth .panel-heading {
     background-color: #3498db !important;
     color: white !important;
-    border-radius: 0.5rem 0.5rem 0 0;
+    border-radius: 0.25rem 0.25rem 0 0;
   }
   .panel-auth .form-group {
     margin-bottom: 1rem;
@@ -125,33 +95,34 @@ custom_auth_css <- tags$style(HTML("
   }
 "))
 
-# ---- 4. wrap the UI with secure_app() with custom styling ----
+# ---- 6. wrap the UI with secure_app() with custom styling ----
 ui <- secure_app(
   landing_raw,
   tag_img = tags$img(src = "logo.png", width = 50),
   background = list(
-    color = "#f8f9fa",
+    color = "#ffffff",
     image = NULL
   ),
   theme = shinythemes::shinytheme("flatly"),
   head_auth = custom_auth_css  # Add custom CSS
 )
 
-# ---- 5. protect the server with secure_server() ----
+# ---- 7. protect the server with secure_server() ----
 server <- function(input, output, session) {
   res_auth <- secure_server(
     check_credentials = check_credentials(credentials)
   )
   
-  # Handle buttons
-  observeEvent(input$btn_app1, {
-    session$sendCustomMessage("shinyapps:openLink", "https://<yourapp1>.shinyapps.io")
-  })
-  
-  observeEvent(input$btn_app2, {
-    session$sendCustomMessage("shinyapps:openLink", "https://<yourapp2>.shinyapps.io")
+  # Dynamically handle button clicks for all apps
+  lapply(1:nrow(apps_config), function(i) {
+    app_id <- apps_config$app_id[i]
+    app_url <- apps_config$app_url[i]
+    
+    observeEvent(input[[paste0("btn_", app_id)]], {
+      session$sendCustomMessage("shinyapps:openLink", app_url)
+    })
   })
 }
 
-# ---- 6. run the app ----
+# ---- 8. run the app ----
 shinyApp(ui, server)

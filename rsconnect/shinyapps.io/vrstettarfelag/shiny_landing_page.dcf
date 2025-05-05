@@ -1,0 +1,13 @@
+name: shiny_landing_page
+title: shiny_landing_page
+username: vrstettarfelag
+account: vrstettarfelag
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14669131
+bundleId: 10218588
+url: https://vrstettarfelag.shinyapps.io/shiny_landing_page/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .Rbuildignore|README.md
